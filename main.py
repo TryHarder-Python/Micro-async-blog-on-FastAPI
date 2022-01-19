@@ -6,6 +6,7 @@ import databases
 from sqlalchemy import select, desc
 from models.users import users_table
 from models.posts import posts_table
+from routers import users
 
 load_dotenv()
 
@@ -20,6 +21,8 @@ SQLALCHEMY_DATABASE_URL = (
 database = databases.Database(SQLALCHEMY_DATABASE_URL)
 
 app = FastAPI()
+
+app.include_router(users.router)
 
 
 @app.on_event("startup")
