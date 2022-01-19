@@ -6,7 +6,7 @@ from .users import users_table
 metadata = sqlalchemy.MetaData()
 
 
-post_table = sqlalchemy.Table(
+posts_table = sqlalchemy.Table(
     'posts',
     metadata,
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True),
