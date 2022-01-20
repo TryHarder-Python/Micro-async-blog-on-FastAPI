@@ -13,14 +13,14 @@ async def create_post(post: post_schema.PostModel, user):
         .values(
             title=post.title,
             content=post.content,
-            created_at=datetime.now(),
-            user_id=user["id"],
+            create_at=datetime.now(),
+            user_id=user["user_id"],
         )
         .returning(
             posts_table.c.id,
             posts_table.c.title,
             posts_table.c.content,
-            posts_table.c.created_at,
+            posts_table.c.create_at,
         )
     )
     post = await database.fetch_one(query)
@@ -36,7 +36,7 @@ async def get_post(post_id: int):
         select(
             [
                 posts_table.c.id,
-                posts_table.c.created_at,
+                posts_table.c.create_at,
                 posts_table.c.title,
                 posts_table.c.content,
                 posts_table.c.user_id,
@@ -56,7 +56,7 @@ async def get_posts(page: int):
         select(
             [
                 posts_table.c.id,
-                posts_table.c.created_at,
+                posts_table.c.create_at,
                 posts_table.c.title,
                 posts_table.c.content,
                 posts_table.c.user_id,
@@ -64,7 +64,7 @@ async def get_posts(page: int):
             ]
         )
         .select_from(posts_table.join(users_table))
-        .order_by(desc(posts_table.c.created_at))
+        .order_by(desc(posts_table.c.create_at))
         .limit(max_per_page)
         .offset(offset1)
     )

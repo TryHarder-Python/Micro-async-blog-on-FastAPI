@@ -30,7 +30,7 @@ async def update_post(
     post_id: int, post_data: PostModel, current_user=Depends(get_current_user)
 ):
     post = await post_utils.get_post(post_id)
-    if post["user_id"] != current_user["id"]:
+    if post["user_id"] != current_user["user_id"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You don't have access to modify this post",

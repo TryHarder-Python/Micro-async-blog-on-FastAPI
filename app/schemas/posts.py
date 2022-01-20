@@ -12,5 +12,5 @@ class PostModel(BaseModel):
 class PostDetailsModel(PostModel):
     """ Для ответа о одном посте """
     id: int
-    created_at: datetime
+    create_at: datetime
     user_name: str
