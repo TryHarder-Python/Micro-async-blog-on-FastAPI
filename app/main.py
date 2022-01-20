@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 import databases
 from sqlalchemy import select, desc
-from models.users import users_table
-from models.posts import posts_table
-from routers import users
+from app.models.users import users_table
+from app.models.posts import posts_table
+from app.routers import users
 
 load_dotenv()
 
