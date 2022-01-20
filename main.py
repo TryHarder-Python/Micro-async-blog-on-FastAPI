@@ -1,5 +1,6 @@
 from os import environ
 
+import uvicorn
 from dotenv import load_dotenv, find_dotenv
 from fastapi import FastAPI
 import databases
@@ -7,6 +8,7 @@ from sqlalchemy import select, desc
 from app.models.users import users_table
 from app.models.posts import posts_table
 from app.routers import users
+from app.routers import posts
 
 load_dotenv(find_dotenv())
 
@@ -22,36 +24,24 @@ database = databases.Database(SQLALCHEMY_DATABASE_URL)
 
 app = FastAPI()
 
-app.include_router(users.router)
-
 
 @app.on_event("startup")
 async def startup():
-    # когда приложение запускается устанавливаем соединение с БД
+    """когда приложение запускается устанавливаем соединение с БД"""
     await database.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    # когда приложение останавливается разрываем соединение с БД
+    """когда приложение останавливается разрываем соединение с БД"""
     await database.disconnect()
 
 
-@app.get("/")
-async def read_root():
-    query = (
-        select(
-            [
-                posts_table.c.id,
-                posts_table.c.create_at,
-                posts_table.c.title,
-                posts_table.c.content,
-                posts_table.c.user_id,
-                users_table.c.name.label('user_name'),
-            ]
+app.include_router(users.router)
+app.include_router(posts.router)
 
-        )
-        .select_from(posts_table.join(users_table))
-        .order_by(desc(posts_table.c.create_at))
-    )
-    return await database.fetch_all(query)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+
+
