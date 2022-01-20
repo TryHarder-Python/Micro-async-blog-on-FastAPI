@@ -1,6 +1,6 @@
 from os import environ
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from fastapi import FastAPI
 import databases
 from sqlalchemy import select, desc
@@ -8,7 +8,7 @@ from app.models.users import users_table
 from app.models.posts import posts_table
 from app.routers import users
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 DB_USER = environ.get("DB_USER", "user")
 DB_PASSWORD = environ.get("DB_PASS", "password")

@@ -4,7 +4,7 @@ import string
 from datetime import datetime, timedelta
 from sqlalchemy import and_
 
-from database import database
+from app.models.database import database
 from app.models.users import tokens_table, users_table
 from app.schemas import users as user_schema
 
